@@ -1,6 +1,5 @@
 package fr.polytech.project.brightestcastle.character;
 
-
 public class Character {
 	
 	private String name;
@@ -31,8 +30,7 @@ public class Character {
 		this.ATK = 3 + strength;
 		this.STA = 20;
 
-		if (job.equals("PALADIN")) this.Threat=25;
-		else this.Threat=20;
+		this.Threat=20;
 
 	}
 
@@ -65,7 +63,9 @@ public class Character {
 	}
 
 	public void setHP(int hP) {
-		HP = hP;
+		if(hP<=HPMax) {
+			HP = hP;
+		} else HP=HPMax;
 	}
 
 	public int getHPMax() {
@@ -107,12 +107,37 @@ public class Character {
 	}
 
 	public void setThreat(int threat) {
-		Threat = threat;
+		Threat += threat;
 	}
 
-	public void takeDamage(int damage) {
+	public int takeDamage(int damage) {
 		
-		setHP(getHP()-(damage-getDEF()));
-	
+		int damageInflicted=damage-getDEF();
+		setHP(getHP()-damageInflicted);
+		
+		return damageInflicted;
 	}
+	
+	public int takeDamageBlinded(int damage) {
+		if ( Math.random()*100 <=50) {
+			System.out.println("Dodged !");
+			return 0;
+		}
+		else {
+			int damageInflicted=damage-getDEF();
+			setHP(getHP()-damageInflicted);
+			return damageInflicted;
+		}
+	}
+	
+	public int takeTrueDamage(int damage) {
+		setHP(getHP()-damage);
+		return damage;
+	}
+	
+	public void generateSTA (int vigor) {
+		setSTA(getSTA()+vigor);
+	}
+
+
 }
